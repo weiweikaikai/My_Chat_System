@@ -61,15 +61,16 @@ clean:
 output:
 	mkdir -p output/server/log
 	mkdir -p output/server/bin
+	mkdir -p output/server/conf
 	mkdir -p output/client/log
 	mkdir -p output/client/bin
+	mkdir -p output/client/conf
 	cp -rf udp_server output/server/bin
-#	cp -rf plugin/server_ctrl.sh output/server
+	cp -rf plugin/run_server.sh output/server
+	cp -rf $(CONF)/server.conf output/server/conf
+	cp -rf $(LOG)/server.log output/server/log
 	cp -rf udp_client  output/client/bin
-#	cp -rf conf        output/server
-#	cp -rf conf        output/client
-#	cp -rf plugin/run_client.sh output/client
-#	rm -f  output/client/conf/server.conf
-#	rm -f  output/server/conf/client.conf
-
+	cp -rf plugin/run_client.sh output/client
+	cp -rf $(CONF)/client.conf  output/client/conf
+	cp -rf $(LOG)/client.log output/client/log
 

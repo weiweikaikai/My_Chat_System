@@ -180,17 +180,15 @@ void usage(char*arg)
 
 int main(int argc,char *argv[])
 {
-	//if(argc != 3)
-	//{
-//		usage(argv[0]);
-//	}
-
-	//std::string ip = argv[1];
-	std::string ip = "127.0.0.1";
-	//unsigned short port = atoi(argv[2]);
-	unsigned short port = 8002;
-udp_client client(ip,port);
-client.init_client();
+     if(argc != 3)
+       {
+       	usage(argv[0]);
+       }
+       
+	std::string ip = argv[1];
+	unsigned short port = atoi(argv[2]);
+    udp_client client(ip,port);
+    client.init_client();
 
      win.init();
 	 signal(SIGINT,handler);
