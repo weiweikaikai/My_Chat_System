@@ -46,9 +46,10 @@ int udp_service::init_service()
    return 0;
 }
 
-int udp_service::reliable_recv_msg(std::string &outmsg)
+int udp_service::reliable_recv_msg()
 {
 	//
+	std::string outmsg;
 	 int ret=recv_msg(outmsg);
      if(ret > 0)
 	 {
@@ -72,19 +73,20 @@ int udp_service::recv_msg(std::string &msg)
 		 else if(size > 0)
 		 {
                 msg = buf;
-				_pool.put_msg(msg);
+				print_log("recvfrom success\n");
+               analy_client(outclient);
 		 }else
 		 {
-
+         
 		 }
 		 return size;
 }
 
-int udp_service::reliable_send_msg(const std::string &inmsg,struct sockaddr_in *client,socklen_t len)
+int udp_service::reliable_send_msg(const std::string &inmsg, struct sockaddr_in *client,socklen_t len)
 {
 	return send_msg(inmsg,client,len);
 }
-int udp_service::send_msg(const std::string &inmsg,struct sockaddr_in *client,socklen_t len)
+int udp_service::send_msg(const std::string &inmsg, struct sockaddr_in *client,socklen_t len)
 {
      ssize_t size = sendto(this->sock,inmsg.c_str(),inmsg.size(),0,(struct sockaddr*)client,len);
 	 if(size < 0)
@@ -105,18 +107,32 @@ int udp_service::broadcast_msg()
 for(;iter != online_user.end();++iter)
 {
 	socklen_t len=sizeof(struct sockaddr_in);
-	ssize_t ret=reliable_send_msg(msg,&iter->second,len);
+	   ssize_t ret=reliable_send_msg(msg,&iter->second,len);
+	   if(ret > 0)
+	   {
+         print_log("broadcast_msg succcess\n");
+	   }
+	   else
+	   {
+         print_log("broadcast_msg failed\n");
+	   }
 }
 return 0;
 }
-int udp_service::analy_client(const struct sockaddr_in &cli,const socklen_t &len,std::string &msg)
+bool udp_service::analy_client(const struct sockaddr_in &cli)
 {
 	std::string ip_key = inet_ntoa(cli.sin_addr);
 	std::map<std::string,struct sockaddr_in>::iterator iter = online_user.find(ip_key);
+
 	if(iter == online_user.end())
 	{
 online_user.insert(std::pair<std::string,struct sockaddr_in>(ip_key,cli));
+//online_user.insert(make_pair(ip_key,cli));
 	}
-	return 0;
+	else
+	{
+        return false;
+	}
+	return true;;
 }
 

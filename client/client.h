@@ -17,9 +17,9 @@
 #include <arpa/inet.h>
 #include <vector>
 #include <strstream>
-
-
-
+#include<vector>
+#include<list>
+using namespace std;
 class udp_client
 {
    public:

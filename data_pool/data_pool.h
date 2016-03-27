@@ -31,4 +31,3 @@ class data_pool
 		int end;
 };
 
-

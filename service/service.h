@@ -24,20 +24,20 @@
 #include"comm.h"
 #include"data_pool.h"
 
-
 class udp_service
 {
 	public:
 		udp_service(std::string ip="127.0.0.1",unsigned short port=8080);
 		int init_service();
-		int reliable_recv_msg(std::string &outmsg);
-        int reliable_send_msg(const std::string &inmsg,struct sockaddr_in *client,socklen_t len);
+		int reliable_recv_msg();
+        int reliable_send_msg(const std::string &inmsg, struct sockaddr_in *client,socklen_t len);
 		int broadcast_msg();
-        int analy_client(const struct sockaddr_in &cli,const socklen_t &len,std::string &msg);
+        bool analy_client(const struct sockaddr_in &cli);
 		~udp_service();
 	private:
-		int send_msg(const std::string &inmsg,struct sockaddr_in *client,socklen_t len);
+		int send_msg(const std::string &inmsg, struct sockaddr_in *client,socklen_t len);
 		int recv_msg(std::string &outmsg);
+
 	int sock;
 	std::string _ip;
 	unsigned short _port;
